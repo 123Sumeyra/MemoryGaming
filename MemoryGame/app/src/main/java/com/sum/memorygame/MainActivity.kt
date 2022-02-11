@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sum.memorygame.databinding.ActivityMainBinding
+import com.sum.memorygame.model.BoardSize
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var rvBoard: RecyclerView
     private lateinit var tvNumMoves: TextView
     private lateinit var tvNumPair: TextView
+    private val boardSize: BoardSize =BoardSize.EASY
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,9 +28,9 @@ class MainActivity : AppCompatActivity() {
         tvNumMoves =binding.tvNumMoves
         tvNumPair = binding.tvNumPairs
 
-        rvBoard.adapter =MemoryBoardAdapter(this, 8)
+        rvBoard.adapter =MemoryBoardAdapter(this, boardSize)
         rvBoard.setHasFixedSize(true)
-        rvBoard.layoutManager =GridLayoutManager(this, 2)
+        rvBoard.layoutManager =GridLayoutManager(this, boardSize.getWidth())
 
 
 
