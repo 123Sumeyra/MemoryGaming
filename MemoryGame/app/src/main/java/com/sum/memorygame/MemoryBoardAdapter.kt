@@ -12,11 +12,18 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.setMargins
 import androidx.recyclerview.widget.RecyclerView
 import com.sum.memorygame.model.BoardSize
+import com.sum.memorygame.model.MemoryCard
+import kotlin.math.max
 import kotlin.math.min
 
 
-class MemoryBoardAdapter(private  val context: Context,
-                         private val boardSize: BoardSize) :
+class MemoryBoardAdapter(
+    private val context: Context,
+    private val boardSize: BoardSize,
+    private val cards: List<MemoryCard>,
+    private val cardClickListener: CardClickListener
+
+) :
 
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
 
@@ -25,12 +32,16 @@ class MemoryBoardAdapter(private  val context: Context,
         private const val TAG = "MemoryBoardAdapter"
     }
 
+    interface  CardClickListener{
+        fun onCardClicked(position:Int)
+    }
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardWith = parent.width /boardSize.getWidth() -(2* MARGIN_SIZE)//-20
         val cardHeight= parent.height /boardSize.getHeight() -(2* MARGIN_SIZE) // -40  -20
-        val cardSideLength  =min(cardWith,cardHeight)
+        val cardSideLength  = min(cardWith,cardHeight)
         val view :View =LayoutInflater.from(context).inflate(R.layout.memory_card,parent,false)
         val layoutParams = view.findViewById<CardView>(R.id.cardView).layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.width = cardSideLength // -40
@@ -53,8 +64,10 @@ class MemoryBoardAdapter(private  val context: Context,
         private val imageButton = itemView.findViewById<ImageButton>(R.id.imageButton)
 
         fun bind(position:Int){
+            imageButton.setImageResource(if (cards[position].isFaceUp) cards[position].identifier else R.drawable.ic_launcher_background)
             imageButton.setOnClickListener {
-                //Log.i(TAG, "Clicked on position $position")
+                Log.i(TAG, "Clicked on position $position")
+                cardClickListener.onCardClicked(position)
 
 
 
